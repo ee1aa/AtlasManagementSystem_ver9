@@ -10,10 +10,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Posts\Like;
 use Auth;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Database\Factories\UserFactory;
+
 class User extends Authenticatable
 {
     use Notifiable;
     use softDeletes;
+    use HasFactory;
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
 
     // const CREATED_AT = null;
 
@@ -42,7 +51,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -54,28 +64,39 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function posts(){
+    public function posts()
+    {
         return $this->hasMany('App\Models\Posts\Post');
     }
 
-    public function calendars(){
+    public function calendars()
+    {
         return $this->belongsToMany('App\Models\Calendars\Calendar', 'calendar_users', 'user_id', 'calendar_id')->withPivot('user_id', 'id');
     }
 
-    public function reserveSettings(){
+    public function reserveSettings()
+    {
         return $this->belongsToMany('App\Models\Calendars\ReserveSettings', 'reserve_setting_users', 'user_id', 'reserve_setting_id')->withPivot('id');
     }
 
-    public function subjects(){
-        return ;// リレーションの定義
+    public function subjects()
+    {
+        return $this->belongsToMany(
+            Subjects::class,      // 相手モデル
+            'subject_users',      // 中間テーブル名
+            'user_id',            // 中間テーブル側の user の外部キー
+            'subject_id'          // 中間テーブル側の subject の外部キー
+        )->withTimestamps(); // リレーションの定義
     }
 
     // いいねしているかどうか
-    public function is_Like($post_id){
+    public function is_Like($post_id)
+    {
         return Like::where('like_user_id', Auth::id())->where('like_post_id', $post_id)->first(['likes.id']);
     }
 
-    public function likePostId(){
+    public function likePostId()
+    {
         return Like::where('like_user_id', Auth::id());
     }
 }
