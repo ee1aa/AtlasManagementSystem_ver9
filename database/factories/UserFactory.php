@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Users\Subjects;
 
 class UserFactory extends Factory
 {
@@ -30,5 +31,26 @@ class UserFactory extends Factory
             'created_at' => now(),
             'updated_at' => now()
         ];
+    }
+
+    //ランダムな初期ユーザーにランダムな選択科目を付与
+    public function configure()
+    {
+        return $this->afterCreating(function ($user) {
+
+            // subjects テーブルに存在する科目IDから、ランダムで1〜3個選ぶ
+            $subjectIds = Subjects::inRandomOrder()
+                ->limit(rand(1, 3))
+                ->pluck('id')
+                ->toArray();
+
+            // 科目が0件なら何もしない（ここ重要）
+            if (count($subjectIds) === 0) {
+                return;
+            }
+
+            // pivot(subject_users) にレコードが作成される
+            $user->subjects()->attach($subjectIds);
+        });
     }
 }
