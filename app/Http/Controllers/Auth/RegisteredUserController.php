@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 use App\Models\Users\Subjects;
 use App\Models\Users\User;
@@ -38,14 +39,25 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
-        try{
+        try {
             $old_year = $request->old_year;
             $old_month = $request->old_month;
             $old_day = $request->old_day;
             $data = $old_year . '-' . $old_month . '-' . $old_day;
             $birth_day = date('Y-m-d', strtotime($data));
+            $request->merge(['birth_day' => $birth_day]);
             $subjects = $request->subject;
-
+            $validated = $request->validate([
+                'over_name' => 'required|string|max:10',
+                'under_name' => 'required|string|max:10',
+                'over_name_kana' => 'required|string|max:30|regex:/\A[ァ-ヴー]+\z/u',
+                'under_name_kana' => 'required|string|max:30|regex:/\A[ァ-ヴー]+\z/u',
+                'mail_address' => 'required|email|max:100|unique:users,mail_address',
+                'sex' => 'required|between:1,3',
+                'birth_day' => 'required|after:2000-1-1|before:today|date',
+                'role' => 'required|between:1,4',
+                'password' => 'required|min:8|max:30|confirmed'
+            ]);
             $user_get = User::create([
                 'over_name' => $request->over_name,
                 'under_name' => $request->under_name,
@@ -57,13 +69,15 @@ class RegisteredUserController extends Controller
                 'role' => $request->role,
                 'password' => bcrypt($request->password)
             ]);
-            if($request->role == 4){
+            if ($request->role == 4) {
                 $user = User::findOrFail($user_get->id);
                 $user->subjects()->attach($subjects);
             }
             DB::commit();
             return view('auth.login.login');
-        }catch(\Exception $e){
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (\Exception $e) {
             DB::rollback();
             return redirect()->route('loginView');
         }

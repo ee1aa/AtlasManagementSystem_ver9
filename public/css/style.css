@@ -11,6 +11,11 @@
   background: #ECF1F6;
 }
 
+.text-danger {
+  font-size: 13px;
+  font-weight: bold;
+}
+
 ul,
 li {
   list-style: none;
