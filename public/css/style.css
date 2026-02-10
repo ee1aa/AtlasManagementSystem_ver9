@@ -21,6 +21,11 @@ li {
   list-style: none;
 }
 
+/* 丸角 */
+.custom-radius{
+  border-radius: 1rem;
+}
+
 /* サイドバー */
 .sidebar {
   width: 150px;
