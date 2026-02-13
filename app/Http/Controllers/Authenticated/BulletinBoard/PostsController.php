@@ -11,6 +11,7 @@ use App\Models\Posts\PostComment;
 use App\Models\Posts\Like;
 use App\Models\Users\User;
 use App\Http\Requests\BulletinBoard\PostFormRequest;
+use App\Http\Requests\BulletinBoard\PostCommentFormRequest;
 use Auth;
 
 class PostsController extends Controller
@@ -83,7 +84,7 @@ class PostsController extends Controller
         return redirect()->route('post.input');
     }
 
-    public function commentCreate(Request $request)
+    public function commentCreate(PostCommentFormRequest $request)
     {
         PostComment::create([
             'post_id' => $request->post_id,
