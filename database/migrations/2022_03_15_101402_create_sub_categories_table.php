@@ -17,7 +17,8 @@ class CreateSubCategoriesTable extends Migration
             $table->increments('id')->unsigned();
             $table->integer('main_category_id')->unsigned()->index()->comment('メインカテゴリーID');
             $table->string('sub_category', 60)->index()->comment('サブカテゴリー名');
-            $table->timestamps(); // created_at と updated_at を自動で追加
+            $table->timestamp('created_at')->useCurrent()->comment('登録日時');
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('更新日時');
 
             // 外部キー制約の追加
             $table->foreign('main_category_id')->references('id')->on('main_categories')->onDelete('cascade');

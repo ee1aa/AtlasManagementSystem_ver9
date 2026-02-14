@@ -3,6 +3,7 @@
 namespace App\Models\Posts;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Categories\SubCategory;
 
 class Post extends Model
 {
@@ -25,6 +26,7 @@ class Post extends Model
     public function subCategories()
     {
         // リレーションの定義
+        return $this->belongsTo(SubCategory::class);
     }
 
     // コメント数
