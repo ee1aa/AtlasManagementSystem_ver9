@@ -38,6 +38,9 @@
     <div class="w-25 ml-auto mr-auto">
       <div class="category_area mt-5 p-5">
         <div class="">
+          @if($errors->first('main_category_name'))
+          <span class="error_message">{{ $errors->first('main_category_name') }}</span>
+          @endif
           <form method="POST" action="{{ route('main.category.create') }}">
             @csrf
             <p class="m-0">メインカテゴリー</p>
@@ -46,6 +49,9 @@
           </form>
         </div>
         <!-- サブカテゴリー追加 -->
+        @if($errors->first('sub_category_name'))
+        <span class="error_message">{{ $errors->first('sub_category_name') }}</span>
+        @endif
         <form method="POST" action="{{ route('sub.category.create') }}">
           @csrf
           <p class="m-0">サブカテゴリー</p>

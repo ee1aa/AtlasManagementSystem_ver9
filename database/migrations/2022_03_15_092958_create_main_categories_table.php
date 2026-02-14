@@ -15,7 +15,7 @@ class CreateMainCategoriesTable extends Migration
     {
         Schema::create('main_categories', function (Blueprint $table) {
             $table->increments('id')->unsigned(); // 自動インクリメントの符号なし整数のプライマリキー
-            $table->string('main_category', 60)->index()->comment('メインカテゴリー名');
+            $table->string('main_category', 100)->index()->comment('メインカテゴリー名');
             $table->timestamp('created_at')->useCurrent()->comment('登録日時');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('更新日時');
         });
