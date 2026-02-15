@@ -23,7 +23,7 @@ class PostsController extends Controller
         $posts = Post::with('user')
             ->withCount(['likes', 'postComments'])
             ->get();
-        $categories = MainCategory::get();
+        $categories = MainCategory::with('subCategories')->get();
         $like = new Like;
         $post_comment = new Post;
         if (!empty($request->keyword)) {
@@ -49,17 +49,20 @@ class PostsController extends Controller
                     $q->orWhereHas('subCategories', function ($sq) use ($keyword) {
                         $sq->where('sub_category', $keyword); // 完全一致
                     });
-                })->get();
-        } else if ($request->category_word) {
-            $sub_category = $request->category_word;
-            $posts = Post::with('user', 'postComments')->get();
+                })->withCount(['likes', 'postComments'])->get();
+        } else if ($request->filled('category_word')) {
+            $sub = $request->category_word;
+            $posts = Post::with('user', 'postComments')
+                ->whereHas('subCategories', function ($q) use ($sub) {
+                    $q->where('sub_category', $sub);
+                })->withCount(['likes', 'postComments'])->get();
         } else if ($request->like_posts) {
             $likes = Auth::user()->likePostId()->get('like_post_id');
             $posts = Post::with('user', 'postComments')
-                ->whereIn('id', $likes)->get();
+                ->whereIn('id', $likes)->withCount(['likes', 'postComments'])->get();
         } else if ($request->my_posts) {
             $posts = Post::with('user', 'postComments')
-                ->where('user_id', Auth::id())->get();
+                ->where('user_id', Auth::id())->withCount(['likes', 'postComments'])->get();
         }
         return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment'));
     }
