@@ -27,9 +27,29 @@ class PostsController extends Controller
         $like = new Like;
         $post_comment = new Post;
         if (!empty($request->keyword)) {
-            $posts = Post::with('user', 'postComments')
-                ->where('post_title', 'like', '%' . $request->keyword . '%')
-                ->orWhere('post', 'like', '%' . $request->keyword . '%')->get();
+            $keyword = trim($request->keyword);
+            $posts = Post::with(['user', 'postComments', 'subCategories'])
+                ->where(function ($q) use ($keyword) {
+                    // ① 投稿タイトル：あいまい
+                    $q->where('post_title', 'like', "%{$keyword}%");
+                    // ② 投稿者名：名字/名前/フルネーム あいまい
+                    $q->orWhereHas('user', function ($uq) use ($keyword) {
+                        $uq->where(function ($nameQ) use ($keyword) {
+                            $nameQ->where('over_name', 'like', "%{$keyword}%")
+                                ->orWhere('under_name', 'like', "%{$keyword}%")
+                                // フルネーム（名字+名前）
+                                ->orWhereRaw("CONCAT(over_name, under_name) LIKE ?", ["%{$keyword}%"])
+                                // 「名字 名前」(半角スペース) もOK
+                                ->orWhereRaw("CONCAT(over_name, ' ', under_name) LIKE ?", ["%{$keyword}%"])
+                                // 「名字　名前」(全角スペース) もOK
+                                ->orWhereRaw("CONCAT(over_name, '　', under_name) LIKE ?", ["%{$keyword}%"]);
+                        });
+                    });
+                    // ③ サブカテゴリー：完全一致
+                    $q->orWhereHas('subCategories', function ($sq) use ($keyword) {
+                        $sq->where('sub_category', $keyword); // 完全一致
+                    });
+                })->get();
         } else if ($request->category_word) {
             $sub_category = $request->category_word;
             $posts = Post::with('user', 'postComments')->get();
