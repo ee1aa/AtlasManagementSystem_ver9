@@ -21,9 +21,15 @@ class UsersController extends Controller
         $updown = $request->updown;
         $gender = $request->sex;
         $role = $request->role;
-        $subjects = null; // ここで検索時の科目を受け取る
+
+        // チェックボックスは配列で受け取る（未選択なら空配列）
+        $selectedSubjectIds = $request->input('subjects', []);
+        if (!is_array($selectedSubjectIds)) {
+            $selectedSubjectIds = [$selectedSubjectIds];
+        }
+
         $userFactory = new SearchResultFactories();
-        $users = $userFactory->initializeUsers($keyword, $category, $updown, $gender, $role, $subjects);
+        $users = $userFactory->initializeUsers($keyword, $category, $updown, $gender, $role, $selectedSubjectIds);
         $subjects = Subjects::all();
         return view('authenticated.users.search', compact('users', 'subjects'));
     }
