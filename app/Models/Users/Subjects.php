@@ -19,8 +19,8 @@ class Subjects extends Model
         return $this->belongsToMany(
             User::class,          // 相手モデル
             'subject_users',      // 中間テーブル名
-            'user_id',            // 中間テーブル側の user の外部キー
-            'subject_id'          // 中間テーブル側の subject の外部キー
+            'subject_id',          // 中間テーブル側の subject の外部キー
+            'user_id'            // 中間テーブル側の user の外部キー
         )->withTimestamps(); // リレーションの定義
     }
 }

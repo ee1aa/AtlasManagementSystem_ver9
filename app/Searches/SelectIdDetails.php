@@ -31,7 +31,7 @@ class SelectIdDetails extends BaseSearchResult implements DisplayUsers
                 $q->whereIn('sex', $gender)->whereIn('role', $role);
             })
             ->whereHas('subjects', function ($q) use ($subjects) {
-                $q->where('subjects.id', $subjects);
+                $q->whereIn('subjects.id', $subjects);
             })
             ->orderBy('id', $updown)
             ->get();
