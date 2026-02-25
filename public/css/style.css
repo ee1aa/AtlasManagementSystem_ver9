@@ -65,6 +65,11 @@ li {
   background: #EEE;
 }
 
+td.calendar-td.past-day.day-sat,
+td.calendar-td.past-day.day-sun {
+  color: #000;
+}
+
 .calendar-td {
   min-width: 100px;
 }
