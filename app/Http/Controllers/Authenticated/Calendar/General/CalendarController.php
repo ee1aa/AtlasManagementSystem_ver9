@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Calendars\General\CalendarView;
 use App\Models\Calendars\ReserveSettings;
 use App\Models\Calendars\Calendar;
-use App\Models\USers\User;
+use App\Models\Users\User;
 use Auth;
+use CreateReserveSettingUsersTable;
 use DB;
+use Illuminate\Validation\Rule;
 
 class CalendarController extends Controller
 {
@@ -40,5 +42,23 @@ class CalendarController extends Controller
             DB::rollback();
         }
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
+    }
+
+    public function delete(Request $request)
+    {
+        $request->validate([
+            'reserve_setting_id' => [
+                'required',
+                'integer',
+                Rule::exists('reserve_setting_users', 'reserve_setting_id')
+                    ->where(fn($q) => $q->where('user_id', auth()->id()))
+            ]
+        ]);
+
+        auth()->user()
+            ->reserveSettings()
+            ->detach($request->reserve_setting_id);
+
+        return back();
     }
 }

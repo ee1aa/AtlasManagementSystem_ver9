@@ -68,26 +68,22 @@ class CalendarView
         }
 
         if (in_array($day->everyDay(), $day->authReserveDay())) {
-          $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
-          if ($reservePart == 1) {
-            $reservePart = "リモ1部";
-          } else if ($reservePart == 2) {
-            $reservePart = "リモ2部";
-          } else if ($reservePart == 3) {
-            $reservePart = "リモ3部";
-          }
-          if ($startDay <= $day->everyDay() && $toDay >= $day->everyDay()) {
-            $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px"></p>';
-            $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
-          } else {
-            $reserve   = $day->authReserveDate($day->everyDay())->first();
-            $reserveId = $reserve->setting_reserve;
-            $dateLabel = $day->everyDay();
-            $timeLabel = $reservePart;
 
-            $html[] = '<button type="button" class="btn btn-danger p-0 w-75 cancel-btn" style="font-size:12px" data-date="' . e($dateLabel) . '" data-time="' . e($timeLabel) . '" data-reserve="' . e($reserveId) . '">' . e($reservePart) . '</button>';
-            $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
-          }
+          $reserve = $day->authReserveDate($day->everyDay())->first();
+
+          $reservePartNum = $reserve->setting_part;
+          $reservePart = $reservePartNum == 1 ? 'リモ1部' : ($reservePartNum == 2 ? 'リモ2部' : 'リモ3部');
+
+          $reserveId = $reserve->id;
+
+          $html[] = '<button type="button" class="btn btn-danger p-0 w-75 cancel-btn" style="font-size:12px"'
+            . ' data-date="' . e($day->everyDay()) . '"'
+            . ' data-time="' . e($reservePart) . '"'
+            . ' data-reserve="' . e($reserveId) . '">'
+            . e($reservePart)
+            . '</button>';
+
+          $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
         } else {
           $html[] = $day->selectPart($day->everyDay());
         }

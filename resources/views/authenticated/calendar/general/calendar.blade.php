@@ -21,9 +21,9 @@
       <p>時間：<span id="modalTime"></span></p>
       <p>上記の予約をキャンセルしてもよろしいですか？</p>
 
-      <form method="POST" action="/delete/calendar" id="modalDeleteForm">
+      <form method="POST" action="{{ route('deleteParts') }}" id="modalDeleteForm">
         @csrf
-        <input type="hidden" name="delete_date" id="modalReserve">
+        <input type="hidden" name="reserve_setting_id" id="modalReserve">
         <button type="button" id="modalClose" class="btn btn-primary px-4">閉じる</button>
         <button type="submit" class="btn btn-danger">キャンセル</button>
       </form>
