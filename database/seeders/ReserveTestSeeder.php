@@ -18,23 +18,23 @@ class ReserveTestSeeder extends Seeder
     public function run()
     {
         $d1 = '2026-02-01';
-        $d2 = '2026-02-27';
+        $d2 = '2026-02-28';
 
         // 🔹 過去日の部作成
-        $part1 = ReserveSettings::create([
+        $part1 = ReserveSettings::updateOrCreate([
             'setting_reserve' => $d1,
             'setting_part'    => 1,
             'limit_users'     => 20,
         ]);
 
-        $part2 = ReserveSettings::create([
+        $part2 = ReserveSettings::updateOrCreate([
             'setting_reserve' => $d1,
             'setting_part'    => 2,
             'limit_users'     => 20,
         ]);
 
         // 🔹 未来日の部
-        $futurePart = ReserveSettings::create([
+        $futurePart = ReserveSettings::updateOrCreate([
             'setting_reserve' => $d2,
             'setting_part'    => 1,
             'limit_users'     => 20,
