@@ -29,8 +29,8 @@ class CalendarController extends Controller
     {
         DB::beginTransaction();
         try {
-            $getPart = $request->getPart;
-            $getDate = $request->getData;
+            $getPart = $request->getPart ?? [];
+            $getDate = $request->getData ?? [];
             $reserveDays = array_filter(array_combine($getDate, $getPart));
             foreach ($reserveDays as $key => $value) {
                 $reserve_settings = ReserveSettings::where('setting_reserve', $key)->where('setting_part', $value)->first();
@@ -55,9 +55,25 @@ class CalendarController extends Controller
             ]
         ]);
 
-        auth()->user()
-            ->reserveSettings()
-            ->detach($request->reserve_setting_id);
+        DB::beginTransaction();
+        try {
+            $reserveSettingId = (int) $request->reserve_setting_id;
+
+            // 同時更新対策でロック
+            $reserveSettings = ReserveSettings::lockForUpdate()->findOrFail($reserveSettingId);
+
+            // 予約キャンセル（中間テーブル削除）
+            auth()->user()->reserveSettings()->detach($reserveSettingId);
+
+            // 枠を戻す
+            $reserveSettings->increment('limit_users');
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // 必要ならエラーメッセージ
+            return back();
+        }
 
         return back();
     }
