@@ -30,19 +30,25 @@
     </div>
     <div class="other_area border w-25">
       <div class="border m-4">
-        <div class=""><a href="{{ route('post.input') }}">投稿</a></div>
-        <div class="">
-          <input type="text" placeholder="キーワードを検索" name="keyword" form="postSearchRequest">
-          <input type="submit" value="検索" form="postSearchRequest">
+        <div class=""><a href="{{ route('post.input') }}" class="btn btn_search_post">投稿</a></div>
+        <div class="d-inline-flex btn-group">
+          <input type="text" placeholder="キーワードを検索" name="keyword" form="postSearchRequest" class="input_keyword">
+          <input type="submit" value="検索" form="postSearchRequest" class="btn btn_search_post">
         </div>
-        <input type="submit" name="like_posts" class="category_btn" value="いいねした投稿" form="postSearchRequest">
-        <input type="submit" name="my_posts" class="category_btn" value="自分の投稿" form="postSearchRequest">
+        <div class="d-inline-flex">
+          <input type="submit" name="like_posts" class="category_btn" value="いいねした投稿" form="postSearchRequest">
+          <input type="submit" name="my_posts" class="category_btn" value="自分の投稿" form="postSearchRequest">
+        </div>
         <ul>
           @foreach($categories as $category)
-          <li class="main_categories" category_id="{{ $category->id }}"><span>{{ $category->main_category }}<span></li>
-          @foreach($category->subCategories as $sub)
-          <input type="submit" name="category_word" class="category_btn" value="{{ $sub->sub_category }}" form="postSearchRequest">
-          @endforeach
+          <li data-toggle="collapse" data-target="#cat{{ $category->id }}" class="main_categories"><span>{{ $category->main_category }}</span></li>
+          <li>
+            <div id="cat{{ $category->id }}" class="collapse">
+              @foreach($category->subCategories as $sub)
+              <input type="submit" name="category_word" class="category_btn" value="{{ $sub->sub_category }}" form="postSearchRequest">
+              @endforeach
+            </div>
+          </li>
           @endforeach
         </ul>
       </div>
