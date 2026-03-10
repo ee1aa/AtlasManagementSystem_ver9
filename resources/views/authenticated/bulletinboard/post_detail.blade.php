@@ -26,6 +26,7 @@
             @endauth
           </div>
 
+          <div>{{ $post->subCategories->first()->sub_category ?? '' }}</div>
           <div class="contributor d-flex">
             <p>
               <span>{{ $post->user->over_name }}</span>
