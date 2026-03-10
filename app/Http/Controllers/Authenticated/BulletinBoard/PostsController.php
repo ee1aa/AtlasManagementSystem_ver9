@@ -25,45 +25,46 @@ class PostsController extends Controller
             ->latest()
             ->get();
         $categories = MainCategory::with('subCategories')->get();
-        $like = new Like;
-        $post_comment = new Post;
+        $like = new Like();
+        $post_comment = new Post();
         if (!empty($request->keyword)) {
             $keyword = trim($request->keyword);
             $posts = Post::with(['user', 'postComments', 'subCategories'])
                 ->where(function ($q) use ($keyword) {
                     // ① 投稿タイトル：あいまい
                     $q->where('post_title', 'like', "%{$keyword}%");
-                    // ② 投稿者名：名字/名前/フルネーム あいまい
-                    $q->orWhereHas('user', function ($uq) use ($keyword) {
-                        $uq->where(function ($nameQ) use ($keyword) {
-                            $nameQ->where('over_name', 'like', "%{$keyword}%")
-                                ->orWhere('under_name', 'like', "%{$keyword}%")
-                                // フルネーム（名字+名前）
-                                ->orWhereRaw("CONCAT(over_name, under_name) LIKE ?", ["%{$keyword}%"])
-                                // 「名字 名前」(半角スペース) もOK
-                                ->orWhereRaw("CONCAT(over_name, ' ', under_name) LIKE ?", ["%{$keyword}%"])
-                                // 「名字　名前」(全角スペース) もOK
-                                ->orWhereRaw("CONCAT(over_name, '　', under_name) LIKE ?", ["%{$keyword}%"]);
-                        });
-                    });
+                    // ② 投稿内容：あいまい
+                    $q->where('post', 'like', "%{$keyword}%");
                     // ③ サブカテゴリー：完全一致
                     $q->orWhereHas('subCategories', function ($sq) use ($keyword) {
                         $sq->where('sub_category', $keyword); // 完全一致
                     });
-                })->withCount(['likes', 'postComments'])->latest()->get();
-        } else if ($request->filled('category_word')) {
+                })
+                ->withCount(['likes', 'postComments'])
+                ->latest()
+                ->get();
+        } elseif ($request->filled('category_word')) {
             $sub = $request->category_word;
             $posts = Post::with('user', 'postComments')
                 ->whereHas('subCategories', function ($q) use ($sub) {
                     $q->where('sub_category', $sub);
-                })->withCount(['likes', 'postComments'])->latest()->get();
-        } else if ($request->like_posts) {
+                })
+                ->withCount(['likes', 'postComments'])
+                ->latest()
+                ->get();
+        } elseif ($request->like_posts) {
             $likes = Auth::user()->likePostId()->get('like_post_id');
             $posts = Post::with('user', 'postComments')
-                ->whereIn('id', $likes)->withCount(['likes', 'postComments'])->latest()->get();
-        } else if ($request->my_posts) {
+                ->whereIn('id', $likes)
+                ->withCount(['likes', 'postComments'])
+                ->latest()
+                ->get();
+        } elseif ($request->my_posts) {
             $posts = Post::with('user', 'postComments')
-                ->where('user_id', Auth::id())->withCount(['likes', 'postComments'])->latest()->get();
+                ->where('user_id', Auth::id())
+                ->withCount(['likes', 'postComments'])
+                ->latest()
+                ->get();
         }
         return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment'));
     }
@@ -85,7 +86,7 @@ class PostsController extends Controller
         $post = Post::create([
             'user_id' => Auth::id(),
             'post_title' => $request->post_title,
-            'post' => $request->post_body
+            'post' => $request->post_body,
         ]);
         $post->subCategories()->attach($request->sub_category_id);
         return redirect()->route('post.show');
@@ -95,7 +96,7 @@ class PostsController extends Controller
     {
         Post::where('id', $request->post_id)->update([
             'post_title' => $request->post_title,
-            'post' => $request->post_body
+            'post' => $request->post_body,
         ]);
         return redirect()->route('post.detail', ['id' => $request->post_id]);
     }
@@ -114,8 +115,8 @@ class PostsController extends Controller
     public function subCategoryCreate(SubCategoryRequest $request)
     {
         SubCategory::create([
-            'main_category_id'  => $request->main_category_id,
-            'sub_category' => $request->sub_category_name
+            'main_category_id' => $request->main_category_id,
+            'sub_category' => $request->sub_category_name,
         ]);
         return redirect()->route('post.input');
     }
@@ -125,7 +126,7 @@ class PostsController extends Controller
         PostComment::create([
             'post_id' => $request->post_id,
             'user_id' => Auth::id(),
-            'comment' => $request->comment
+            'comment' => $request->comment,
         ]);
         return redirect()->route('post.detail', ['id' => $request->post_id]);
     }
@@ -133,7 +134,7 @@ class PostsController extends Controller
     public function myBulletinBoard()
     {
         $posts = Auth::user()->posts()->get();
-        $like = new Like;
+        $like = new Like();
         return view('authenticated.bulletinboard.post_myself', compact('posts', 'like'));
     }
 
@@ -141,7 +142,7 @@ class PostsController extends Controller
     {
         $like_post_id = Like::with('users')->where('like_user_id', Auth::id())->get('like_post_id')->toArray();
         $posts = Post::with('user')->whereIn('id', $like_post_id)->get();
-        $like = new Like;
+        $like = new Like();
         return view('authenticated.bulletinboard.post_like', compact('posts', 'like'));
     }
 
@@ -150,7 +151,7 @@ class PostsController extends Controller
         $user_id = Auth::id();
         $post_id = $request->post_id;
 
-        $like = new Like;
+        $like = new Like();
 
         $like->like_user_id = $user_id;
         $like->like_post_id = $post_id;
@@ -164,11 +165,9 @@ class PostsController extends Controller
         $user_id = Auth::id();
         $post_id = $request->post_id;
 
-        $like = new Like;
+        $like = new Like();
 
-        $like->where('like_user_id', $user_id)
-            ->where('like_post_id', $post_id)
-            ->delete();
+        $like->where('like_user_id', $user_id)->where('like_post_id', $post_id)->delete();
 
         return response()->json();
     }
