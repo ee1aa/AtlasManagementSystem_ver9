@@ -32,13 +32,13 @@ class PostsController extends Controller
             $posts = Post::with(['user', 'postComments', 'subCategories'])
                 ->where(function ($q) use ($keyword) {
                     // ① 投稿タイトル：あいまい
-                    $q->where('post_title', 'like', "%{$keyword}%");
-                    // ② 投稿内容：あいまい
-                    $q->where('post', 'like', "%{$keyword}%");
-                    // ③ サブカテゴリー：完全一致
-                    $q->orWhereHas('subCategories', function ($sq) use ($keyword) {
-                        $sq->where('sub_category', $keyword); // 完全一致
-                    });
+                    $q->where('post_title', 'like', "%{$keyword}%")
+                        // ② 投稿内容：あいまい
+                        ->orWhere('post', 'like', "%{$keyword}%")
+                        // ③ サブカテゴリー：完全一致
+                        ->orWhereHas('subCategories', function ($sq) use ($keyword) {
+                            $sq->where('sub_category', $keyword); // 完全一致
+                        });
                 })
                 ->withCount(['likes', 'postComments'])
                 ->latest()
