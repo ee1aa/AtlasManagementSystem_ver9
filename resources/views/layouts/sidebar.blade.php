@@ -17,22 +17,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Oswald:wght@200&display=swap"
         rel="stylesheet">
-    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/7762b90c64.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="all_content">
     <div class="d-flex">
         <div class="sidebar">
-            <p><a href="{{ route('top.show') }}">トップ</a></p>
-            <p><a href="/logout">ログアウト</a></p>
-            <p><a href="{{ route('calendar.general.show', ['user_id' => Auth::id()]) }}">スクール予約</a></p>
+            <p><a href="{{ route('top.show') }}"><i class="fa-regular fa-house" style="color: rgb(255, 255, 255);"></i> トップ</a></p>
+            <p><a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket" style="color: rgb(255, 255, 255);"></i> ログアウト</a></p>
+            <p><a href="{{ route('calendar.general.show', ['user_id' => Auth::id()]) }}"><i class="fa-regular fa-calendar-days" style="color: rgb(255, 255, 255);"></i> スクール予約</a></p>
             @can('admin')
-                <p><a href="{{ route('calendar.admin.show', ['user_id' => Auth::id()]) }}">スクール予約確認</a></p>
-                <p><a href="{{ route('calendar.admin.setting', ['user_id' => Auth::id()]) }}">スクール枠登録</a></p>
+            <p><a href="{{ route('calendar.admin.show', ['user_id' => Auth::id()]) }}"><i class="fa-regular fa-calendar-check" style="color: rgb(255, 255, 255);"></i> スクール予約確認</a></p>
+            <p><a href="{{ route('calendar.admin.setting', ['user_id' => Auth::id()]) }}"><i class="fa-regular fa-calendar-plus" style="color: rgb(255, 255, 255);"></i> スクール枠登録</a></p>
             @endcan
-            <p><a href="{{ route('post.show') }}">掲示板</a></p>
-            <p><a href="{{ route('user.show') }}">ユーザー検索</a></p>
+            <p><a href="{{ route('post.show') }}"><i class="fa-solid fa-comment-dots" style="color: rgb(255, 255, 255);"></i> 掲示板</a></p>
+            <p><a href="{{ route('user.show') }}"><i class="fa-solid fa-user-group" style="color: rgb(255, 255, 255);"></i> ユーザー検索</a></p>
         </div>
         <div class="main-container">
             {{ $slot }}
