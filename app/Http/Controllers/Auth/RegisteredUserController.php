@@ -53,10 +53,10 @@ class RegisteredUserController extends Controller
                 'over_name_kana' => 'required|string|max:30|regex:/\A[ァ-ヴー]+\z/u',
                 'under_name_kana' => 'required|string|max:30|regex:/\A[ァ-ヴー]+\z/u',
                 'mail_address' => 'required|email|max:100|unique:users,mail_address',
-                'sex' => 'required|between:1,3',
+                'sex' => 'required|in:1,2,3',
                 'birth_day' => 'required|after:2000-1-1|before:today|date',
-                'role' => 'required|between:1,4',
-                'password' => 'required|min:8|max:30|confirmed'
+                'role' => 'required|in:1,2,3,4',
+                'password' => 'required|min:8|max:30|confirmed',
             ]);
             $user_get = User::create([
                 'over_name' => $request->over_name,
@@ -67,7 +67,7 @@ class RegisteredUserController extends Controller
                 'sex' => $request->sex,
                 'birth_day' => $birth_day,
                 'role' => $request->role,
-                'password' => bcrypt($request->password)
+                'password' => bcrypt($request->password),
             ]);
             if ($request->role == 4) {
                 $user = User::findOrFail($user_get->id);
