@@ -26,6 +26,12 @@ li {
   border-radius: 1rem;
 }
 
+.old_year,
+.old_month,
+.old_day {
+  padding-right: 30px;
+}
+
 /* サイドバー */
 .sidebar {
   width: 200px;

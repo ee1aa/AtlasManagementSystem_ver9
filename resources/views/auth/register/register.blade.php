@@ -1,7 +1,7 @@
 <x-guest-layout>
   <form action="{{ route('registerPost') }}" method="POST">
     <div class="w-100 vh-100 d-flex" style="align-items:center; justify-content:center; background:#ECF1F6">
-      <div class="w-25 vh-75 border p-5 bg-white custom-radius shadow">
+      <div class="w-20 vh-75 border p-5 bg-white custom-radius shadow">
         <div class="register_form">
           <div class="d-flex mt-3" style="justify-content:space-between">
             <div class="" style="width:140px">
@@ -64,15 +64,15 @@
           </div>
         </div>
         <div class="mt-3 d-flex justify-content-around">
-          <div class="form-check">
+          <div class="form-check pl-0">
             <input type="radio" name="sex" class="sex" value="1">
             <label style="font-size:13px">男性</label>
           </div>
-          <div class="form-check">
+          <div class="form-check pl-0">
             <input type="radio" name="sex" class="sex" value="2">
             <label style="font-size:13px">女性</label>
           </div>
-          <div class="form-check">
+          <div class="form-check pl-0">
             <input type="radio" name="sex" class="sex" value="3">
             <label style="font-size:13px">その他</label>
           </div>
@@ -84,79 +84,91 @@
         </div>
         <div class="mt-3">
           <label class="d-block m-0 aa" style="font-size:13px">生年月日</label>
-          <div class="border-bottom border-primary" style="width:50px;">
-            <select class="old_year border-0" name="old_year">
-              <option value="none">-----</option>
-              <option value="2000">2000</option>
-              <option value="2001">2001</option>
-              <option value="2002">2002</option>
-              <option value="2003">2003</option>
-              <option value="2004">2004</option>
-              <option value="2005">2005</option>
-              <option value="2006">2006</option>
-              <option value="2007">2007</option>
-              <option value="2008">2008</option>
-              <option value="2009">2009</option>
-              <option value="2010">2010</option>
-            </select>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="form-check pl-0">
+              <span class="border-bottom border-primary d-inline-block" style="width:85px;">
+                <select class="old_year border-0" name="old_year">
+                  <option value="none">-----</option>
+                  <option value="2000">2000</option>
+                  <option value="2001">2001</option>
+                  <option value="2002">2002</option>
+                  <option value="2003">2003</option>
+                  <option value="2004">2004</option>
+                  <option value="2005">2005</option>
+                  <option value="2006">2006</option>
+                  <option value="2007">2007</option>
+                  <option value="2008">2008</option>
+                  <option value="2009">2009</option>
+                  <option value="2010">2010</option>
+                </select>
+              </span>
+              <label style="font-size:13px; margin-right:10px">年</label>
+            </div>
+            <div class="form-check pl-0">
+              <span class="border-bottom border-primary d-inline-block" style="width:85px;">
+                <select class="old_month border-0" name="old_month">
+                  <option value="none">-----</option>
+                  <option value="01">1</option>
+                  <option value="02">2</option>
+                  <option value="03">3</option>
+                  <option value="04">4</option>
+                  <option value="05">5</option>
+                  <option value="06">6</option>
+                  <option value="07">7</option>
+                  <option value="08">8</option>
+                  <option value="09">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+              </span>
+              <label style="font-size:13px; margin-right:10px">月</label>
+            </div>
+            <div class="form-check pl-0">
+              <span class="border-bottom border-primary d-inline-block" style="width:85px;">
+                <select class="old_day border-0" name="old_day">
+                  <option value="none">-----</option>
+                  <option value="01">1</option>
+                  <option value="02">2</option>
+                  <option value="03">3</option>
+                  <option value="04">4</option>
+                  <option value="05">5</option>
+                  <option value="06">6</option>
+                  <option value="07">7</option>
+                  <option value="08">8</option>
+                  <option value="09">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="26">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                  <option value="31">31</option>
+                </select>
+              </span>
+              <label style="font-size:13px">日</label>
+            </div>
+            @error('birth_day')
+            <div class="text-danger">
+              {{ $message }}
+            </div>
+            @enderror
           </div>
-          <label style="font-size:13px">年</label>
-          <select class="old_month" name="old_month">
-            <option value="none">-----</option>
-            <option value="01">1</option>
-            <option value="02">2</option>
-            <option value="03">3</option>
-            <option value="04">4</option>
-            <option value="05">5</option>
-            <option value="06">6</option>
-            <option value="07">7</option>
-            <option value="08">8</option>
-            <option value="09">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-          </select>
-          <label style="font-size:13px">月</label>
-          <select class="old_day" name="old_day">
-            <option value="none">-----</option>
-            <option value="01">1</option>
-            <option value="02">2</option>
-            <option value="03">3</option>
-            <option value="04">4</option>
-            <option value="05">5</option>
-            <option value="06">6</option>
-            <option value="07">7</option>
-            <option value="08">8</option>
-            <option value="09">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-            <option value="22">22</option>
-            <option value="23">23</option>
-            <option value="24">24</option>
-            <option value="25">25</option>
-            <option value="26">26</option>
-            <option value="27">27</option>
-            <option value="28">28</option>
-            <option value="29">29</option>
-            <option value="30">30</option>
-            <option value="31">31</option>
-          </select>
-          <label style="font-size:13px">日</label>
-          @error('birth_day')
-          <div class="text-danger">
-            {{ $message }}
-          </div>
-          @enderror
         </div>
         <div class="mt-3">
           <label class="d-block m-0" style="font-size:13px">役職</label>
