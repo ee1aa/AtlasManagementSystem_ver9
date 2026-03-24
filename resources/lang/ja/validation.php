@@ -14,7 +14,7 @@ return [
     'regex' => '※:attribute の形式が正しくありません。',
     'date' => '※:attribute は正しい日付を入力してください。',
     'after' => '※:attribute は :date より後の日付にしてください。',
-    'before' => '※:attribute は :date より前の日付にしてください。',
+    'before' => '※:attribute は今日より前の日付にしてください。',
     'in' => '※不正な値です。',
 
     'attributes' => [
