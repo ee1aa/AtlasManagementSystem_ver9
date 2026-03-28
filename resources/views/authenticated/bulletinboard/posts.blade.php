@@ -50,6 +50,7 @@
                     <input type="submit" name="my_posts" class="category_btn orange p-2" value="自分の投稿"
                         form="postSearchRequest">
                 </div>
+                <div class="mb-3">カテゴリー検索</div>
                 <ul>
                     @foreach ($categories as $category)
                         <li data-toggle="collapse" data-target="#cat{{ $category->id }}" class="main_categories">
