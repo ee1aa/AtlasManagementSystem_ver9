@@ -276,6 +276,13 @@ border: none;
   flex: 1;
 }
 
+.main_categories{
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  padding-bottom: 4px;
+  margin-top: 1rem;
+}
+
 .main_categories span,
 .sub_categories li input {
   list-style: none;
