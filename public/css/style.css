@@ -128,6 +128,13 @@ td.calendar-td.past-day.day-sun {
 }
 
 /* 掲示板 */
+.post_sub_category{
+  background-color: #03AAD2;
+  color: #FFF;
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+
 .sub_categories {
   display: none;
 }
