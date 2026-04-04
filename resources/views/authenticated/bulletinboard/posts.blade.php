@@ -61,8 +61,8 @@
                             <div id="cat{{ $category->id }}" class="collapse">
                                 @foreach ($category->subCategories as $sub)
                                     <input type="submit" name="category_word"
-                                        class="btn btn-sm col text-left border-bottom" value="{{ $sub->sub_category }}"
-                                        form="postSearchRequest" style="width: 80%">
+                                        class="btn btn-sm col text-left border-bottom category_word ml-3"
+                                        value="{{ $sub->sub_category }}" form="postSearchRequest" style="width: 85%">
                                 @endforeach
                             </div>
                         </li>

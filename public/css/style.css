@@ -187,6 +187,10 @@ flex: 4;
 width: 100%;
 }
 
+.category_word{
+  padding-left: 0px;
+}
+
 /* 掲示板 詳細画面 */
 .contributor {
   font-size: 12px;
