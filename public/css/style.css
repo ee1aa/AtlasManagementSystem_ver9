@@ -285,6 +285,25 @@ width: 100%;
   cursor: pointer;
   padding-bottom: 4px;
   margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggle{
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+  transform: rotate(45deg);
+  transition: transform 0.3s;
+  margin-right: 10px;
+}
+
+/* 開いたとき（上向き） */
+.main_categories[aria-expanded="true"] .toggle {
+  transform: rotate(-135deg);
 }
 
 .main_categories span,

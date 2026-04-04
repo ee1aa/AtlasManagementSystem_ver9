@@ -55,6 +55,7 @@
                     @foreach ($categories as $category)
                         <li data-toggle="collapse" data-target="#cat{{ $category->id }}" class="main_categories">
                             <span>{{ $category->main_category }}</span>
+                            <span class="toggle"></span>
                         </li>
                         <li>
                             <div id="cat{{ $category->id }}" class="collapse">
