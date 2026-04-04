@@ -61,7 +61,7 @@
                                 @foreach ($category->subCategories as $sub)
                                     <input type="submit" name="category_word"
                                         class="btn btn-sm col text-left border-bottom" value="{{ $sub->sub_category }}"
-                                        form="postSearchRequest">
+                                        form="postSearchRequest" style="width: 80%">
                                 @endforeach
                             </div>
                         </li>
