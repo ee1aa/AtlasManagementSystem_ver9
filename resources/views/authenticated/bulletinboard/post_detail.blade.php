@@ -1,34 +1,39 @@
 <x-sidebar>
     <div class="vh-100 d-flex">
         <div class="w-50 mt-5">
-            <div class="m-3 detail_container">
+            <div class="m-3 detail_container rounded">
                 <div class="p-3">
+                    <div class="errors">
+                        @if ($errors->first('post_title'))
+                            <span class="error_message d-block">{{ $errors->first('post_title') }}</span>
+                        @endif
+                        @if ($errors->first('post_body'))
+                            <span class="error_message d-block">{{ $errors->first('post_body') }}</span>
+                        @endif
+                    </div>
                     <div class="detail_inner_head">
-                        <div>
+                        <div class="d-flex justify-content-between w-100 post_status align-items-end mb-4">
+                            <span class="post_sub_category">
+                                {{ $post->subCategories->first()->sub_category ?? '' }}
+                            </span>
+                            @auth
+                                @if (Auth::id() === $post->user_id)
+                                    <div>
+                                        <button class="btn btn-primary edit-modal-open" post_title="{{ $post->post_title }}"
+                                            post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集
+                                        </button>
+                                        <button class="btn btn-danger" onclick="return confirm('削除してもよろしいですか？')">
+                                            <a class="text-white" href="{{ route('post.delete', ['id' => $post->id]) }}">
+                                                削除
+                                            </a>
+                                        </button>
+                                    </div>
+                                @endif
+                            @endauth
                         </div>
-                        <div class="">
-                            @if ($errors->first('post_title'))
-                                <span class="error_message d-block">{{ $errors->first('post_title') }}</span>
-                            @endif
-                            @if ($errors->first('post_body'))
-                                <span class="error_message d-block">{{ $errors->first('post_body') }}</span>
-                            @endif
-                        </div>
-                        @auth
-                            @if (Auth::id() === $post->user_id)
-                                <div>
-                                    <button class="btn btn-primary edit-modal-open" post_title="{{ $post->post_title }}"
-                                        post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</button>
-                                    <button class="btn btn-danger" onclick="return confirm('削除してもよろしいですか？')">
-                                        <a class="text-white" href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
-                                    </button>
-                                </div>
-                            @endif
-                        @endauth
                     </div>
 
-                    <div>{{ $post->subCategories->first()->sub_category ?? '' }}</div>
-                    <div class="contributor d-flex">
+                    <div class="contributor d-flex justify-content-between">
                         <p>
                             <span>{{ $post->user->over_name }}</span>
                             <span>{{ $post->user->under_name }}</span>
@@ -36,8 +41,8 @@
                         </p>
                         <span class="ml-5">{{ $post->created_at }}</span>
                     </div>
-                    <div class="detsail_post_title">{{ $post->post_title }}</div>
-                    <div class="mt-3 detsail_post"> {!! nl2br(e($post->post)) !!}</div>
+                    <div class="detail_post_title">{{ $post->post_title }}</div>
+                    <div class="mt-3 detail_post"> {!! nl2br(e($post->post)) !!}</div>
                 </div>
                 <div class="p-3">
                     <div class="comment_container">

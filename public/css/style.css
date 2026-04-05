@@ -200,17 +200,14 @@ width: 100%;
 
 /* 掲示板 詳細画面 */
 .contributor {
-  font-size: 12px;
   color: #999;
   font-weight: bold;
 }
 
-.detsail_post_title {
-  font-size: 14px;
+.detail_post_title {
 }
 
-.detsail_post {
-  font-size: 12px;
+.detail_post {
   color: #9E9E9E;
 }
 
@@ -253,7 +250,7 @@ width: 100%;
 }
 
 .post_status span {
-  font-size: 12px;
+  font-size: 15px;
 }
 
 /* 掲示板　カテゴリー */
