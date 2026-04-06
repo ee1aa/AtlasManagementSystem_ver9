@@ -325,15 +325,20 @@ width: 100%;
 }
 
 /* ユーザー検索 */
-.reserve_users_area {
+.reserve_users_wrapper{
   display: flex;
-  flex-wrap: wrap;
-  width: 800px;
-  margin: 10px auto;
-  height: 80vh;
-  overflow: scroll;
-  padding: 10px;
-  border-radius: 5px;
+  justify-content: center;
+}
+
+.reserve_users_area {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  justify-content: center;
+  align-content: flex-start;
+  gap: 20px;
+  overflow-y: scroll;
+  padding: 20px;
+  max-height: 100vh;
 }
 
 .reserve_users_area span {
@@ -343,6 +348,7 @@ width: 100%;
 .one_person {
   width: 250px;
   height: 250px;
+  border-radius: 10px;
 }
 
 .search_conditions span {
